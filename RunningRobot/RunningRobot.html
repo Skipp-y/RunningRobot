@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        #version 300 es
+        precision highp float;
+        precision highp int;
+
+        in vec4 vPosition;
+        out vec3 fTexCubeCoord;
+
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+
+        void main()
+        {
+            gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+            fTexCubeCoord = normalize(vPosition.xyz);
+        }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #version 300 es
+        precision highp float;
+        precision highp int;
+
+        out vec4 fragmentColor;
+        in vec3 fTexCubeCoord;
+
+        uniform samplerCube texMap;
+        uniform bool showSky;
+        uniform vec4 fColor;
+
+        void main()
+        {
+            if (showSky) {
+                fragmentColor = texture(texMap, fTexCubeCoord);
+            } else {
+                fragmentColor = fColor;
+            }
+        }
+    </script>
+
+    <script type="text/javascript" src="Common/webgl-utils.js"></script>
+    <script type="text/javascript" src="Common/initShaders.js"></script>
+    <script type="text/javascript" src="Common/MV.js"></script>
+    <script type="text/javascript" src="RunningRobot.js"></script>
+</head>
+<body>
+    <table border="0" cellspacing="5" cellpadding="10">
+        <tr>
+            <td valign="top">
+                <canvas id="gl-canvas" width="800" height="500">
+                    Oops ... your browser doesn't support the HTML5 canvas element
+                </canvas>
+                <img id="cubefront" src="Images/skybox_front.png" hidden />
+                <img id="cubeback" src="Images/skybox_back.png" hidden />
+                <img id="cubetop" src="Images/skybox_top.png" hidden />
+                <img id="cubebottom" src="Images/skybox_bottom.png" hidden />
+                <img id="cubeleft" src="Images/skybox_left.png" hidden />
+                <img id="cuberight" src="Images/skybox_right.png" hidden />
+                <img id="texture1" src="Images/stripedtexture.png" hidden />
+                <img id="texture2" src="Images/wallpapertexture.png" hidden />
+                <img id="texture3" src="Images/fabrictexture.png" hidden />
+            </td>
+            <td valign="top">
+               
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
